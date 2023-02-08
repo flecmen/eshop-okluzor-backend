@@ -1,0 +1,52 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:14.1-alpine
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB: ${POSTGRES_DATABASE}
+      - POSTGRES_USER: ${POSTGRES_USER}
+      - POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  backend:
+    build: .
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres/${POSTGRES_DATABASE}"
+      SMTP_HOSTNAME: ${SMTP_HOSTNAME}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USERNAME: ${SMTP_USERNAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+        # ROOT_URL: ${ROOT_URL}
+    ports:
+      - '127.0.0.1:5000:5000'
+    depends_on:
+      - postgres
+    volumes:
+      # Maps our current project directory `.` to
+      # our working directory in the container
+      - ./:/usr/src/app/
+      # node_modules workaround for volumes
+      # https://stackoverflow.com/a/32785014
+      - /usr/src/app/node_modules
+    
+  # PostgreSQL pgAdmin panel accessible at http://localhost:16543/
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${ADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${ADMIN_PASSWORD}
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres
+
+networks:
+  default:
+
+volumes:
+  postgres_data:

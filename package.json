@@ -5,8 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "docker-compose -f docker-compose.local.yml up",
-    "start": "nodemon src/app.ts",
-    "old": "concurrently \"npx tsc\" \"npx tsc -b --watch\" \"nodemon -q dist/src/app.js\""
+    "start": "nodemon src/app.ts"
   },
   "author": "David Flek",
   "license": "ISC",
