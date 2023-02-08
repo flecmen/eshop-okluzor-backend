@@ -18,7 +18,7 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-RUN npm run prisma generate && npm run build  
+RUN npx prisma generate
 
 EXPOSE 5000
 
