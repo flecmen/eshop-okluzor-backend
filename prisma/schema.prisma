@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Address {
+  id           Int     @id @default(autoincrement())
+  mesto        String
+  ulice        String
+  cislo_popis  String?
+  cislo_orient String?
+  psc          String
+  user         User?
+  branch       Branch?
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  nazev_firmy String
+  password    String
+  ico         String   @unique
+  dic         String   @unique
+  tel         String
+  email       String   @unique
+  address     Address  @relation(fields: [addressId], references: [id])
+  branch      Branch[]
+  order       Order[]
+  addressId   Int      @unique
+}
+
+model Branch {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  addressId Int     @unique
+  tel       String
+  email     String
+  address   Address @relation(fields: [addressId], references: [id])
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Order     Order[]
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String
+  image       Bytes
+  products    Product[]
+}
+
+model Product {
+  id                  Int            @id @default(autoincrement())
+  category            Category       @relation(fields: [categoryId], references: [id])
+  nazev               String
+  vyrobce             String
+  popis               String
+  cena                Int
+  obrazek             Bytes
+  dph                 Int
+  typ                 Typ
+  //náplasťové
+  pocet_kusu_v_baleni Int
+  rozmery             String
+  //látkové
+  s_obrazkem          Boolean
+  orientace           Orientace
+  //přísavkové
+  barva               Barva
+  typ_prisavkove      Typ_prisavkove
+  //oční krytí
+  velikost            Velikost
+  //other
+  categoryId          Int
+  Order_item          Order_item[]
+}
+
+model Order {
+  id          Int          @id @default(autoincrement())
+  user        User         @relation(fields: [userId], references: [id])
+  userId      Int
+  branch      Branch       @relation(fields: [branchId], references: [id])
+  branchId    Int
+  created_at  DateTime     @default(now())
+  status      Order_status
+  note        String
+  order_items Order_item[]
+}
+
+model Order_item {
+  id        Int     @id @default(autoincrement())
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int     @default(0)
+}
+
+enum Orientace {
+  PRAVY
+  LEVY
+  UNI
+}
+
+enum Barva {
+  PRIRODNI
+  SVETLE_RUZOVA
+  CERVENA
+  FIALOVA
+  MODRA
+  ZELENA
+  TYRKYSOVA
+  ZLUTA
+}
+
+enum Typ {
+  naplastovy
+  latkovy
+  prisavkovy
+  ocni_kryti
+}
+
+enum Typ_prisavkove {
+  A
+  B
+  C
+}
+
+enum Velikost {
+  S
+  L
+}
+
+enum Order_status {
+  na_ceste
+  odelsano
+  dokonceno
+}
