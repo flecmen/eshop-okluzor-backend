@@ -18,6 +18,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+RUN npm run prisma generate && npm run build  
+
 EXPOSE 5000
 
 CMD [ "npm", "run", "start" ]

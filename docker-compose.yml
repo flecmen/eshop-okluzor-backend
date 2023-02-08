@@ -16,10 +16,6 @@ services:
     restart: unless-stopped
     environment:
       DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres/${POSTGRES_DATABASE}"
-      SMTP_HOSTNAME: ${SMTP_HOSTNAME}
-      SMTP_PORT: ${SMTP_PORT}
-      SMTP_USERNAME: ${SMTP_USERNAME}
-      SMTP_PASSWORD: ${SMTP_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
         # ROOT_URL: ${ROOT_URL}
     ports:
