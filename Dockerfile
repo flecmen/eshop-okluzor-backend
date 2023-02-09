@@ -18,6 +18,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+RUN echo $DATABASE_URL
+
 RUN npx prisma migrate deploy
 
 EXPOSE 5000
