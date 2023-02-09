@@ -20,8 +20,6 @@ COPY . .
 
 RUN echo $DATABASE_URL
 
-RUN npx prisma migrate deploy
-
 EXPOSE 5000
 
 CMD [ "npm", "run", "start" ]
