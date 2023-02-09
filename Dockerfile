@@ -18,8 +18,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-RUN echo $DATABASE_URL
+RUN npx prisma generate
 
 EXPOSE 5000
 
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "stt" ]
