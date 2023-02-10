@@ -40,6 +40,20 @@ export default {
         });
     },
 
+    async updateUser(userId: number, data: Prisma.UserUpdateInput): Promise<User> {
+        let onlyUser = data
+        delete onlyUser.address
+        delete onlyUser.branch
+        let updatedUser = await prisma.user.update({
+            where: {
+                id: userId
+            },
+            data: data
+        })
+        //TODO: Updatovat všechny aspekty usera
+        return updatedUser
+    },
+
     async updatePassword(email: User["email"], password: User["password"]) {
         return prisma.user.update({
             where: {

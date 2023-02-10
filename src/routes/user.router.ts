@@ -77,14 +77,30 @@ router.put('/', async (req, res) => {
     }
 })
 
+//edit user
+router.put('/:userId', async (req, res) => {
+    const userId = parseInt(req.params.userId);
+    try {
+        let user = req.body
+        await userSerivice.updateUser(userId, user)
+        res.json(user)
+    } catch (err) {
+        res.status(406).send('Chyba obsahu ' + err)
+    }
+})
+
 //Create branch
 router.put('/:userId/createBranch', async (req, res) => {
-    const userId: User["id"] = parseInt(req.params.userId);
-    let branch = req.body
-    branch.address = { create: branch.address }
-    branch.user = { connect: { id: userId } }
-    await branchService.createBranch(branch);
-    res.json(branch);
+    const userId = parseInt(req.params.userId);
+    try {
+        let branch = req.body
+        branch.address = { create: branch.address }
+        branch.user = { connect: { id: userId } }
+        await branchService.createBranch(branch);
+        res.json(branch);
+    } catch (err) {
+        res.status(406).send('Chyba obsahu (/userId/createBranch) ' + err)
+    }
 })
 
 //Delete
