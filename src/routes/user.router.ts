@@ -90,7 +90,7 @@ router.put('/:userId', async (req, res) => {
 })
 
 //Create branch
-router.put('/:userId/createBranch', async (req, res) => {
+router.put('/:userId/branch', async (req, res) => {
     const userId = parseInt(req.params.userId);
     try {
         let branch = req.body
@@ -99,14 +99,37 @@ router.put('/:userId/createBranch', async (req, res) => {
         await branchService.createBranch(branch);
         res.json(branch);
     } catch (err) {
-        res.status(406).send('Chyba obsahu (/userId/createBranch) ' + err)
+        res.status(406).send('Chyba obsahu (/userId/branch) ' + err)
+    }
+})
+
+//edit branch
+router.put('/:userId/branch/:branchId', async (req, res) => {
+    const userId = parseInt(req.params.userId);
+    const branchId = parseInt(req.params.branchId);
+    try {
+        let branch = req.body
+        await userService.updateBranch(branchId, branch);
+        res.json(branch);
+    } catch (err) {
+        res.status(406).send('Chyba obsahu (/userId/branch) ' + err)
     }
 })
 
 //Delete
+//Delete user
 router.delete('/:userId', async (req, res) => {
     const userId = parseInt(req.params.userId);
     await userService.deleteUser({ id: userId });
+    res.status(204).send('no content');
+})
+
+//Delete branch
+router.delete('/:userId/branch/:branchId', async (req, res) => {
+    const userId = parseInt(req.params.userId);
+    const branchId = parseInt(req.params.branchId);
+    //const user = await userService.user({ id: userId });
+    await userService.deleteBranch({ id: branchId })
     res.status(204).send('no content');
 })
 
