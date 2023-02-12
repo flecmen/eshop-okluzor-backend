@@ -1,3 +1,5 @@
+import { Secret } from 'jsonwebtoken';
+import { Params } from 'express-jwt';
 const dotenv = require('dotenv');
 dotenv.config()
 
@@ -25,9 +27,9 @@ function defaultEnv(varName: string, defaultValue: any): any {
 
 // This is later used in prisma, let's error early
 const db_url = process.env.DATABASE_URL
+const PORT = requireEnv('PORT');
 
-const PORT = 3000;
-const FRONT_ROOT_URL = defaultEnv('FRONT_ROOT_URL', 'http://localhost:3001');
+const FRONT_ROOT_URL = defaultEnv('FRONT_ROOT_URL', 'http://localhost:9000');
 const API_ROOT_URL = defaultEnv('API_ROOT_URL', `http://localhost:${PORT}`);
 const JWT_SECRET = requireEnv('JWT_SECRET');
 const JWT_SALT = requireEnv('JWT_SALT');
@@ -37,8 +39,8 @@ export default {
     FRONT_ROOT_URL,
     API_ROOT_URL,
     jwtConfig: {
-        secret: JWT_SECRET,
-        algorithms: ['HS256']
+        secret: JWT_SECRET as Params['secret'],
+        algorithms: ['HS256'] as Params['algorithms']
     },
     passwordConfig: {
         salt: JWT_SALT,

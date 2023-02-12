@@ -1,4 +1,4 @@
-import { PrismaClient, User, Prisma } from '@prisma/client';
+import { PrismaClient, User, Prisma, Branch } from '@prisma/client';
 const prisma = new PrismaClient();
 
 
@@ -40,6 +40,29 @@ export default {
         });
     },
 
+    async updateUser(userId: number, data: Prisma.UserUpdateInput): Promise<User> {
+        let onlyUser = data
+        delete onlyUser.address
+        delete onlyUser.branch
+        let updatedUser = await prisma.user.update({
+            where: {
+                id: userId
+            },
+            data: data
+        })
+        //TODO: Updatovat všechny aspekty usera
+        return updatedUser
+    },
+
+    async updateBranch(branchId: number, branch: Prisma.BranchUpdateInput): Promise<Branch> {
+        return await prisma.branch.update({
+            where: {
+                id: branchId
+            },
+            data: branch
+        })
+    },
+
     async updatePassword(email: User["email"], password: User["password"]) {
         return prisma.user.update({
             where: {
@@ -62,6 +85,17 @@ export default {
         }
         return
     },
+
+    async deleteBranch(branchWhereUniqueInput: Prisma.BranchWhereUniqueInput): Promise<void> {
+        try {
+            await prisma.branch.delete({
+                where: branchWhereUniqueInput
+            })
+        } catch (err) {
+            console.log(`error deleting user ${branchWhereUniqueInput.id}: ${err}`)
+        }
+        return
+    }
 
 
 }
