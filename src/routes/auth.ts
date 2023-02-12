@@ -34,7 +34,8 @@ router.post('/login', async (req, res) => {
 
     //úspěšné přihlášení
     const response = {
-        token: authService.generateToken(user)
+        token: authService.generateToken(user),
+        user: user
     };
     res.status(201).json(response)
 })

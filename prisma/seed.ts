@@ -9,6 +9,7 @@ async function main() {
     update: {},
     create: {
       nazev_firmy: 'Reflek plus',
+      role: 'Admin',
       ico: '123456789',
       dic: 'CZ012518',
       tel: '123 456 789',

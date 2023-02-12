@@ -4,12 +4,14 @@ import { User, Branch } from "@prisma/client";
 import userService from "../service/user.service";
 import branchService from "../service/branch.service";
 import authService from "../service/auth.service";
+import config from "../config";
+import * as jwt from 'jsonwebtoken';
 
 
 const router = express.Router();
 
 //Get all users
-router.get('/', async (req, res) => {
+router.get('/', authService.isAdmin.bind(authService), async (req, res) => {
     const users = await userSerivice.allUsers();
     res.json(users)
 })
@@ -31,7 +33,7 @@ router.get('/:userId/branch', async (req, res) => {
 
 //PUT
 //Create user
-router.put('/', async (req, res) => {
+router.put('/', authService.isAdmin.bind(authService), async (req, res) => {
     try {
         let user = req.body
         user.address = { create: user.address }
@@ -83,14 +85,14 @@ router.put('/:userId/branch/:branchId', async (req, res) => {
 
 //Delete
 //Delete user
-router.delete('/:userId', async (req, res) => {
+router.delete('/:userId', authService.isAdmin.bind(authService), async (req, res) => {
     const userId = parseInt(req.params.userId);
     await userService.deleteUser({ id: userId });
     res.status(204).send('no content');
 })
 
 //Delete branch
-router.delete('/:userId/branch/:branchId', async (req, res) => {
+router.delete('/:userId/branch/:branchId', authService.isAdmin.bind(authService), async (req, res) => {
     const userId = parseInt(req.params.userId);
     const branchId = parseInt(req.params.branchId);
     //const user = await userService.user({ id: userId });
