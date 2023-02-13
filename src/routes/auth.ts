@@ -8,6 +8,7 @@ const router = express.Router();
 //POST
 router.post('/login', async (req, res) => {
     // 1. verify input data, throw 400 if something is missing
+    console.log('jsme v loginu')
     if (
         req.body.email == undefined || req.body.email === '' ||
         req.body.password == undefined || req.body.password === ''
@@ -28,6 +29,8 @@ router.post('/login', async (req, res) => {
 
     //kontrola hesla
     if (hashed_pw !== user.password) {
+        console.log('hashed_pw: ' + hashed_pw);
+        console.log('db_pw: ' + user.password)
         res.status(401).json('invalid credentials')
         return;
     }
