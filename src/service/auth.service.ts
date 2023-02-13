@@ -43,7 +43,6 @@ export default {
     isAdmin(req: Request, res: Response, next: NextFunction) {
         const token = this.getDecodedTokenFromHeaders(req)
         if (!token) return res.status(401).send('Unauthorized');
-        console.log(token)
         if (token.isAdmin) {
             return next();
         } else {

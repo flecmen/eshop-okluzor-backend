@@ -63,11 +63,9 @@ export default {
         })
     },
 
-    async updatePassword(email: User["email"], password: User["password"]) {
+    async updatePassword(userWhereUniqueInput: Prisma.UserWhereUniqueInput, password: User["password"]) {
         return prisma.user.update({
-            where: {
-                email
-            },
+            where: userWhereUniqueInput,
             data: {
                 password
             }
