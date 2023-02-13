@@ -4,6 +4,7 @@ import { User, Branch } from "@prisma/client";
 import userService from "../service/user.service";
 import branchService from "../service/branch.service";
 import authService from "../service/auth.service";
+import addressService from "src/service/address.service";
 import config from "../config";
 import * as jwt from 'jsonwebtoken';
 
@@ -96,7 +97,7 @@ router.delete('/:userId/branch/:branchId', authService.isAdmin.bind(authService)
     const userId = parseInt(req.params.userId);
     const branchId = parseInt(req.params.branchId);
     //const user = await userService.user({ id: userId });
-    await userService.deleteBranch({ id: branchId })
+    await branchService.deleteBranch({ id: branchId })
     res.status(204).send('no content');
 })
 

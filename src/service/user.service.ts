@@ -1,8 +1,9 @@
 import { PrismaClient, User, Prisma, Branch } from '@prisma/client';
+import addressService from './address.service';
 const prisma = new PrismaClient();
 
-
 export default {
+
     //GET
     async user(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<User | null> {
         return prisma.user.findUnique({
@@ -74,26 +75,19 @@ export default {
 
     //DELETE
     async deleteUser(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<void> {
+        const user = await this.user(userWhereUniqueInput)
+        const addressId = user?.addressId;
+
         try {
             await prisma.user.delete({
                 where: userWhereUniqueInput
             })
+            await addressService.deleteAddress({ id: addressId })
         } catch (err) {
             console.log(`error deleting user ${userWhereUniqueInput.id}: ${err}`)
         }
         return
     },
-
-    async deleteBranch(branchWhereUniqueInput: Prisma.BranchWhereUniqueInput): Promise<void> {
-        try {
-            await prisma.branch.delete({
-                where: branchWhereUniqueInput
-            })
-        } catch (err) {
-            console.log(`error deleting user ${branchWhereUniqueInput.id}: ${err}`)
-        }
-        return
-    }
 
 
 }
