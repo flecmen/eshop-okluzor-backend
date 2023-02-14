@@ -1,6 +1,7 @@
 import { PrismaClient, Address, Prisma } from '@prisma/client';
 import userService from './user.service';
 import branchService from './branch.service';
+import Logger from '../lib/logger';
 const prisma = new PrismaClient();
 
 export default {
@@ -26,7 +27,7 @@ export default {
                     where: addressWhereUniqueInput
                 })
             } catch (err) {
-                console.log(`error deleting address ${addressWhereUniqueInput.id}: ${err}`)
+                Logger.error(`Failed to delete address ${addressWhereUniqueInput.id}: ${err}`)
             }
         }
         return

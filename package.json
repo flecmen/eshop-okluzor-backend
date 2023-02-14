@@ -5,8 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "docker-compose -f docker-compose.local.yml up",
-    "start": "nodemon src/app.ts",
-    "old": "concurrently \"npx tsc\" \"npx tsc -b --watch\" \"nodemon -q dist/src/app.js\""
+    "start": "nodemon src/app.ts"
   },
   "author": "David Flek",
   "license": "ISC",
@@ -15,13 +14,16 @@
     "@prisma/client": "^4.7.1",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/jwt-decode": "^3.1.0",
+    "@types/morgan": "^1.9.4",
     "arg": "^5.0.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-jwt": "^8.2.0",
-    "ts-node": "^10.9.1"
+    "morgan": "^1.10.0",
+    "ts-node": "^10.9.1",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

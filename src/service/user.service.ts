@@ -1,5 +1,6 @@
 import { PrismaClient, User, Prisma, Branch } from '@prisma/client';
 import addressService from './address.service';
+import Logger from '../lib/logger';
 const prisma = new PrismaClient();
 
 export default {
@@ -84,7 +85,8 @@ export default {
             })
             await addressService.deleteAddress({ id: addressId })
         } catch (err) {
-            console.log(`error deleting user ${userWhereUniqueInput.id}: ${err}`)
+            Logger.error(`Failed to delete user ${userWhereUniqueInput.id}: ${err}`)
+
         }
         return
     },
