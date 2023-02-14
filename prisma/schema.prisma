@@ -59,7 +59,7 @@ model Product {
   nazev               String
   vyrobce             String
   popis               String
-  cena                Int
+  cena                Float
   obrazek             Bytes
   dph                 Int
   //náplasťové
@@ -79,24 +79,25 @@ model Product {
 }
 
 model Order {
-  id          Int          @id @unique @default(autoincrement())
-  userId      Int
-  branchId    Int
-  created_at  DateTime     @default(now())
-  status      Order_status
-  note        String?
-  branch      Branch       @relation(fields: [branchId], references: [id])
-  user        User         @relation(fields: [userId], references: [id])
-  order_items Order_item[]
+  id               Int          @id @unique @default(autoincrement())
+  userId           Int
+  branchId         Int
+  time_of_creation DateTime     @default(now())
+  status           Order_status
+  note             String?
+  branch           Branch       @relation(fields: [branchId], references: [id])
+  user             User         @relation(fields: [userId], references: [id])
+  order_items      Order_item[]
 }
 
 model Order_item {
-  id        Int     @id @unique @default(autoincrement())
-  orderId   Int
-  productId Int
-  quantity  Int     @default(0)
-  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product   Product @relation(fields: [productId], references: [id])
+  id           Int     @id @unique @default(autoincrement())
+  orderId      Int
+  productId    Int
+  quantity     Int     @default(1)
+  priceAtOrder Float // new field to store the price of the product at the time of the order
+  order        Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product      Product @relation(fields: [productId], references: [id])
 }
 
 enum Orientace {
