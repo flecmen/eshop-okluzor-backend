@@ -16,6 +16,14 @@ export default {
         });
     },
 
+    //PUT
+    async updateAddress(addressWhereUniqueInput: Prisma.AddressWhereUniqueInput, addressUpdateInput: Prisma.AddressUpdateInput) {
+        return prisma.address.update({
+            where: addressWhereUniqueInput,
+            data: addressUpdateInput,
+        })
+    },
+
     //DELETE
     async deleteAddress(addressWhereUniqueInput: Prisma.AddressWhereUniqueInput): Promise<void> {
         //Ověřit, zda existuje user nebo branch s touto adresou, potom nemazat

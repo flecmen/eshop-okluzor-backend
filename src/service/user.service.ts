@@ -1,12 +1,22 @@
-import { PrismaClient, User, Prisma, Branch } from '@prisma/client';
+import { PrismaClient, User, Prisma, Branch, Address } from '@prisma/client';
 import addressService from './address.service';
 import Logger from '../lib/logger';
+import branchService from './branch.service';
 const prisma = new PrismaClient();
+
+interface extendedBranch extends Branch {
+    address: Address;
+}
+interface ExtendedUser extends User {
+    branch: extendedBranch[];
+    address: Address;
+}
 
 export default {
 
+
     //GET
-    async user(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<User | null> {
+    async user(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<ExtendedUser | null> {
         return prisma.user.findUnique({
             where: userWhereUniqueInput,
             include: {
@@ -46,13 +56,14 @@ export default {
         let onlyUser = data
         delete onlyUser.address
         delete onlyUser.branch
+
         let updatedUser = await prisma.user.update({
             where: {
                 id: userId
             },
             data: data
         })
-        //TODO: Updatovat všechny aspekty usera
+
         return updatedUser
     },
 

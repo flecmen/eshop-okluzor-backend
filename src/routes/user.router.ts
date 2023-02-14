@@ -4,9 +4,11 @@ import { User, Branch } from "@prisma/client";
 import userService from "../service/user.service";
 import branchService from "../service/branch.service";
 import authService from "../service/auth.service";
-import addressService from "src/service/address.service";
+import addressService from "../service/address.service";
 import config from "../config";
 import * as jwt from 'jsonwebtoken';
+import Logger from "../lib/logger";
+import _ from "lodash";
 
 
 const router = express.Router();
@@ -50,10 +52,23 @@ router.put('/:userId', async (req, res) => {
     const userId = parseInt(req.params.userId);
     try {
         let user = req.body
-        await userSerivice.updateUser(userId, user)
+        let dbUser = await userService.user({ id: userId })
+        //Změnilo se vůbec něco?
+        if (!_.isEqual(user, dbUser)) await userSerivice.updateUser(userId, user)
+        //Změnila se adresa?
+        if (!_.isEqual(user.address, dbUser?.address)) await addressService.updateAddress({ id: user.address.id }, user.address)
+        //Změnily se branches?
+        if (!_.isEqual(user.branch, dbUser?.branch)) {
+            for (let i = 0; i < user.branch.length; i++) {
+                await branchService.updateBranch({ id: user.branch[i].id }, user.branch[i]);
+            }
+        }
+
+
         res.json(user)
     } catch (err) {
         res.status(406).send('Chyba obsahu ' + err)
+        Logger.error(err)
     }
 })
 

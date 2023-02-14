@@ -24,11 +24,18 @@ export default {
         })
     },
 
-    //SET
+    //PUT
     async createBranch(data: Prisma.BranchCreateInput): Promise<Branch> {
         return prisma.branch.create({
             data,
         });
+    },
+
+    async updateBranch(branchWhereUniqueInput: Prisma.BranchWhereUniqueInput, branchUpdateInput: Prisma.BranchUpdateInput) {
+        return prisma.branch.update({
+            where: branchWhereUniqueInput,
+            data: branchUpdateInput,
+        })
     },
     //DELETE
     async deleteBranch(branchWhereUniqueInput: Prisma.BranchWhereUniqueInput): Promise<void> {
