@@ -1,12 +1,14 @@
-import { PrismaClient, Branch, Prisma } from '@prisma/client';
+import { PrismaClient, Branch, Prisma, Address } from '@prisma/client';
 import addressService from './address.service';
 import Logger from '../lib/logger';
 const prisma = new PrismaClient();
-
+interface extendedBranch extends Branch {
+    address: Address;
+}
 
 export default {
     //GET
-    async getBranch(branchWhereUniqueInput: Prisma.BranchWhereUniqueInput): Promise<Branch | null> {
+    async getBranch(branchWhereUniqueInput: Prisma.BranchWhereUniqueInput): Promise<extendedBranch | null> {
         return prisma.branch.findUnique({
             where: branchWhereUniqueInput,
             include: {
@@ -15,7 +17,7 @@ export default {
         })
     },
 
-    async branches(branchWhereInput: Prisma.BranchWhereInput): Promise<Branch[] | null> {
+    async getBranches(branchWhereInput: Prisma.BranchWhereInput): Promise<Branch[] | null> {
         return prisma.branch.findMany({
             where: branchWhereInput,
             include: {
@@ -31,7 +33,10 @@ export default {
         });
     },
 
-    async updateBranch(branchWhereUniqueInput: Prisma.BranchWhereUniqueInput, branchUpdateInput: Prisma.BranchUpdateInput) {
+    async updateBranch(branchWhereUniqueInput: Prisma.BranchWhereUniqueInput, branchUpdateInput: Prisma.BranchUpdateInput): Promise<Branch> {
+        let onlyBranch = branchUpdateInput;
+        delete onlyBranch?.address;
+
         return prisma.branch.update({
             where: branchWhereUniqueInput,
             data: branchUpdateInput,

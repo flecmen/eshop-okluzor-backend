@@ -54,8 +54,8 @@ export default {
 
     async updateUser(userId: number, data: Prisma.UserUpdateInput): Promise<User> {
         let onlyUser = data
-        delete onlyUser.address
-        delete onlyUser.branch
+        delete onlyUser?.address
+        delete onlyUser?.branch
 
         let updatedUser = await prisma.user.update({
             where: {
@@ -65,15 +65,6 @@ export default {
         })
 
         return updatedUser
-    },
-
-    async updateBranch(branchId: number, branch: Prisma.BranchUpdateInput): Promise<Branch> {
-        return await prisma.branch.update({
-            where: {
-                id: branchId
-            },
-            data: branch
-        })
     },
 
     async updatePassword(userWhereUniqueInput: Prisma.UserWhereUniqueInput, password: User["password"]) {

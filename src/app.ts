@@ -5,6 +5,7 @@ import config from './config'
 import homepageRouter from './routes/homepage';
 import authRouter from './routes/auth';
 import userRouter from './routes/user.router';
+import branchRouter from './routes/branch.router';
 import Logger from "./lib/logger";
 import morganMiddleware from './config/morganMiddleware'
 import { expressjwt } from "express-jwt";
@@ -19,15 +20,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: config.FRONT_ROOT_URL }));
 
 //Middleware
-app.use(morganMiddleware)
+app.use(morganMiddleware) // logger
 
 // secured urls
 app.use('/user', expressjwt(config.jwtConfig));
+app.use('/branch', expressjwt(config.jwtConfig));
 
 
 app.use('/', homepageRouter);
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
+app.use('/branch', branchRouter);
 
 
 
