@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Address {
-  id           Int     @id @default(autoincrement())
+  id           Int     @id @unique @default(autoincrement())
   mesto        String
   ulice        String
   cislo_popis  String?
@@ -19,13 +19,13 @@ model Address {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
+  id          Int      @id @unique @default(autoincrement())
   nazev_firmy String
   ico         String   @unique
   dic         String   @unique
   password    String
-  email       String   @unique
-  tel         String
+  email       String?  @unique
+  tel         String?
   addressId   Int      @unique
   role        Role     @default(Customer)
   branch      Branch[]
@@ -34,18 +34,19 @@ model User {
 }
 
 model Branch {
-  id        Int     @id @default(autoincrement())
-  userId    Int
-  email     String
-  tel       String
-  addressId Int     @unique
-  address   Address @relation(fields: [addressId], references: [id])
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Order     Order[]
+  id          Int     @id @unique @default(autoincrement())
+  userId      Int
+  branch_name String? //název fyzické pobočky, pokud tam není, tak použít název firmy
+  email       String?
+  tel         String?
+  addressId   Int     @unique
+  address     Address @relation(fields: [addressId], references: [id])
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Order       Order[]
 }
 
 model Category {
-  id          Int       @id @default(autoincrement())
+  id          Int       @id @unique @default(autoincrement())
   name        String    @unique
   description String
   image       Bytes
@@ -53,15 +54,14 @@ model Category {
 }
 
 model Product {
-  id                  Int            @id @default(autoincrement())
+  id                  Int            @id @unique @default(autoincrement())
   category            Category       @relation(fields: [categoryId], references: [id])
   nazev               String
   vyrobce             String
   popis               String
-  cena                Int
+  cena                Float
   obrazek             Bytes
   dph                 Int
-  typ                 Typ
   //náplasťové
   pocet_kusu_v_baleni Int
   rozmery             String
@@ -79,24 +79,25 @@ model Product {
 }
 
 model Order {
-  id          Int          @id @default(autoincrement())
-  userId      Int
-  branchId    Int
-  created_at  DateTime     @default(now())
-  status      Order_status
-  note        String
-  branch      Branch       @relation(fields: [branchId], references: [id])
-  user        User         @relation(fields: [userId], references: [id])
-  order_items Order_item[]
+  id               Int          @id @unique @default(autoincrement())
+  userId           Int
+  branchId         Int
+  time_of_creation DateTime     @default(now())
+  status           Order_status
+  note             String?
+  branch           Branch       @relation(fields: [branchId], references: [id])
+  user             User         @relation(fields: [userId], references: [id])
+  order_items      Order_item[]
 }
 
 model Order_item {
-  id        Int     @id @default(autoincrement())
-  orderId   Int
-  productId Int
-  quantity  Int     @default(0)
-  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product   Product @relation(fields: [productId], references: [id])
+  id           Int     @id @unique @default(autoincrement())
+  orderId      Int
+  productId    Int
+  quantity     Int     @default(1)
+  priceAtOrder Float // new field to store the price of the product at the time of the order
+  order        Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product      Product @relation(fields: [productId], references: [id])
 }
 
 enum Orientace {
@@ -114,13 +115,6 @@ enum Barva {
   ZELENA
   TYRKYSOVA
   ZLUTA
-}
-
-enum Typ {
-  naplastovy
-  latkovy
-  prisavkovy
-  ocni_kryti
 }
 
 enum Typ_prisavkove {

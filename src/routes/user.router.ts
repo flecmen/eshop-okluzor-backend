@@ -1,11 +1,14 @@
 import express from "express";
 import userSerivice from "../service/user.service"
-import { User, Branch } from "@prisma/client";
+import { User, Branch, Address } from "@prisma/client";
 import userService from "../service/user.service";
 import branchService from "../service/branch.service";
 import authService from "../service/auth.service";
+import addressService from "../service/address.service";
 import config from "../config";
 import * as jwt from 'jsonwebtoken';
+import Logger from "../lib/logger";
+import _ from "lodash";
 
 
 const router = express.Router();
@@ -24,10 +27,10 @@ router.get('/:userId', async (req, res) => {
     res.json(user)
 })
 
-//get branches by user Id
+//get branches by userId
 router.get('/:userId/branch', async (req, res) => {
     const userId: User["id"] = parseInt(req.params.userId);
-    const branches = await branchService.branches({ userId: userId });
+    const branches = await branchService.getBranches({ userId: userId });
     res.json(branches)
 })
 
@@ -48,11 +51,25 @@ router.put('/', authService.isAdmin.bind(authService), async (req, res) => {
 router.put('/:userId', async (req, res) => {
     const userId = parseInt(req.params.userId);
     try {
-        let user = req.body
-        await userSerivice.updateUser(userId, user)
-        res.json(user)
+        const user = req.body
+        const returnUser = _.clone(user);
+        const userAddress: Address = user.address
+        const branches: Branch[] = user.branch
+        let dbUser = await userService.user({ id: userId })
+        //Změnilo se vůbec něco?
+        if (!_.isEqual(user, dbUser)) await userSerivice.updateUser(userId, user)
+        //Změnila se adresa?
+        if (!_.isEqual(userAddress, dbUser?.address)) await addressService.updateAddress({ id: userAddress.id }, userAddress)
+        //Změnily se branches?
+        if (!_.isEqual(branches, dbUser?.branch)) {
+            for (let i = 0; i < branches.length; i++) {
+                await branchService.updateBranch({ id: branches[i].id }, branches[i]);
+            }
+        }
+        res.json(returnUser)
     } catch (err) {
         res.status(406).send('Chyba obsahu ' + err)
+        Logger.error(err)
     }
 })
 
@@ -70,19 +87,6 @@ router.put('/:userId/branch', async (req, res) => {
     }
 })
 
-//edit branch
-router.put('/:userId/branch/:branchId', async (req, res) => {
-    const userId = parseInt(req.params.userId);
-    const branchId = parseInt(req.params.branchId);
-    try {
-        let branch = req.body
-        await userService.updateBranch(branchId, branch);
-        res.json(branch);
-    } catch (err) {
-        res.status(406).send('Chyba obsahu (/userId/branch) ' + err)
-    }
-})
-
 //Delete
 //Delete user
 router.delete('/:userId', authService.isAdmin.bind(authService), async (req, res) => {
@@ -91,13 +95,6 @@ router.delete('/:userId', authService.isAdmin.bind(authService), async (req, res
     res.status(204).send('no content');
 })
 
-//Delete branch
-router.delete('/:userId/branch/:branchId', authService.isAdmin.bind(authService), async (req, res) => {
-    const userId = parseInt(req.params.userId);
-    const branchId = parseInt(req.params.branchId);
-    //const user = await userService.user({ id: userId });
-    await userService.deleteBranch({ id: branchId })
-    res.status(204).send('no content');
-})
+
 
 export default router;

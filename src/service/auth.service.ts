@@ -3,6 +3,7 @@ import jwt, { Secret, SignOptions } from 'jsonwebtoken';
 import config from '../config';
 import crypto from "crypto";
 import { NextFunction, Request, Response } from "express";
+import Logger from '../lib/logger';
 
 export default {
     generateToken(user: User) {
@@ -42,11 +43,15 @@ export default {
     },
     isAdmin(req: Request, res: Response, next: NextFunction) {
         const token = this.getDecodedTokenFromHeaders(req)
-        if (!token) return res.status(401).send('Unauthorized');
-        console.log(token)
+        if (!token) {
+            Logger.info('No token provided')
+            return res.status(401).send('Unauthorized')
+        };
         if (token.isAdmin) {
+            Logger.info('Admin authenticated')
             return next();
         } else {
+            Logger.info('User is not authorized to access')
             return res.status(401).send('Unauthorized');
         }
     }
