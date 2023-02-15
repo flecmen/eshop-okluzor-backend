@@ -1,30 +1,25 @@
 #borrowed from sensorico frontline
 
-FROM node:lts-alpine as base
+FROM node:14-alpine3.12
 
-# Make sure packages are indeed up to date
-RUN apk add --no-cache nodejs-current npm
-RUN npm upgrade -g npm
+# Create app directory
+WORKDIR /usr/src/app
 
-WORKDIR /app
-COPY package.json package-lock.json ./
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+# copying packages first helps take advantage of docker layers
+COPY package*.json ./
 
-# Install deps but drop cache to reduce image size
-RUN mkdir /tmp/cache && npm install --cache /tmp/cache && rm -rf /tmp/cache
+RUN npm install
+# If you are building your code for production
+# RUN npm ci --only=production
 
-# Using multi-stage build to optimize dependency installing
+# Bundle app source
+COPY . .
 
-FROM base as prod
-
-WORKDIR /app
-COPY . ./
-
-
-RUN npm run prisma generate && npm run build 
-
-# TODO
-# RUN npm test
+RUN npx prisma generate
 
 EXPOSE 5000
 
-CMD ["node", "dist/src/main"]
+CMD [ "npm", "run", "stt" ]
