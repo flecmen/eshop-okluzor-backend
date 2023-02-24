@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "docker-compose -f docker-compose.local.yml up",
-    "push-db-changes": "npx prisma db push && npx prisma migrate deploy",
+    "push-db-changes": "npx prisma migrate deploy",
     "start": "npx ts-node src/app.ts"
   },
   "author": "David Flek",

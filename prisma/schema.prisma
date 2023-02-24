@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Address {
-  id           Int     @id @unique @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   mesto        String
   ulice        String
   cislo_popis  String?
@@ -19,7 +19,7 @@ model Address {
 }
 
 model User {
-  id          Int      @id @unique @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   nazev_firmy String
   ico         String   @unique
   dic         String   @unique
@@ -34,7 +34,7 @@ model User {
 }
 
 model Branch {
-  id          Int     @id @unique @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   userId      Int
   branch_name String? //název fyzické pobočky, pokud tam není, tak použít název firmy
   email       String?
@@ -46,7 +46,7 @@ model Branch {
 }
 
 model Category {
-  id          Int       @id @unique @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   name        String    @unique
   description String
   image       Bytes
@@ -54,7 +54,7 @@ model Category {
 }
 
 model Product {
-  id                  Int            @id @unique @default(autoincrement())
+  id                  Int            @id @default(autoincrement())
   category            Category       @relation(fields: [categoryId], references: [id])
   nazev               String
   vyrobce             String
@@ -79,7 +79,7 @@ model Product {
 }
 
 model Order {
-  id               Int          @id @unique @default(autoincrement())
+  id               Int          @id @default(autoincrement())
   userId           Int
   branchId         Int
   time_of_creation DateTime     @default(now())
@@ -91,7 +91,7 @@ model Order {
 }
 
 model Order_item {
-  id           Int     @id @unique @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   orderId      Int
   productId    Int
   quantity     Int     @default(1)
