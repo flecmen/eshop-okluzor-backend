@@ -2,6 +2,7 @@ import express from 'express';
 import authService from '../service/auth.service'
 import userService from '../service/user.service';
 import { User } from '@prisma/client';
+import Logger from 'src/lib/logger';
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ router.post('/login', async (req, res) => {
     // 2. compare the password to the hash stored in the database, throw 401 or 403 if credentials incorrect
     const hashed_pw: String = authService.hashPassword(req.body.password)
     const user: User | null = await userService.user({ email: req.body.email });
-
+    Logger.debug('hashed pw: ' + hashed_pw)
     // kontrola existence uživatele
     if (!user) {
         res.status(400).json('Invalid username');
