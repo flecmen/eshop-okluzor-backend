@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "docker-compose -f docker-compose.local.yml up",
     "push-db-changes": "npx prisma migrate deploy",
-    "start": "npx prisma migrate deploy && npx ts-node src/app.ts"
+    "start": "npx prisma generate && npx prisma migrate deploy && npx ts-node src/app.ts"
   },
   "author": "David Flek",
   "license": "ISC",
@@ -25,7 +25,8 @@
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
     "ts-node": "^10.9.1",
-    "winston": "^3.8.2"
+    "winston": "^3.8.2",
+    "prisma": "^4.10.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -36,7 +37,6 @@
     "concurrently": "^7.6.0",
     "jsonwebtoken": "^9.0.0",
     "nodemon": "^2.0.20",
-    "prisma": "^4.10.1",
     "typescript": "^4.9.4"
   },
   "prisma": {
