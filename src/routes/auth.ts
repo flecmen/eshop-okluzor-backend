@@ -2,7 +2,7 @@ import express from 'express';
 import authService from '../service/auth.service'
 import userService from '../service/user.service';
 import { User } from '@prisma/client';
-import Logger from 'src/lib/logger';
+import Logger from '../lib/logger';
 
 const router = express.Router();
 
