@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "docker-compose -f docker-compose.local.yml up",
     "push-db-changes": "npx prisma migrate deploy",
-    "start": "npx prisma generate && npx prisma migrate deploy && npx ts-node src/app.ts"
+    "start": "npx prisma migrate deploy && npx ts-node src/app.ts"
   },
   "author": "David Flek",
   "license": "ISC",
