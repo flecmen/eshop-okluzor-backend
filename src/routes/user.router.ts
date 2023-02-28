@@ -39,11 +39,15 @@ router.get('/:userId/branch', async (req, res) => {
 router.put('/', authService.isAdmin.bind(authService), async (req, res) => {
     try {
         let user = req.body
+        //nastavení adresy na vytvoření
         user.address = { create: user.address }
+        // pokud nevytváříme branche, smažeme je z objektu
+        if (user.branch.length === 0) delete user.branch
         await userSerivice.createUser(user);
         res.json(user)
     } catch (err) {
-        res.status(406).send('Chyba obsahu ' + err)
+        Logger.error(err)
+        res.status(405).send('Chyba obsahu ' + err)
     }
 })
 
