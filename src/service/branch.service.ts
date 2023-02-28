@@ -36,7 +36,7 @@ export default {
     async updateBranch(branchWhereUniqueInput: Prisma.BranchWhereUniqueInput, branchUpdateInput: Prisma.BranchUpdateInput): Promise<Branch> {
         let onlyBranch = branchUpdateInput;
         delete onlyBranch?.address;
-
+        Logger.debug(branchUpdateInput)
         return prisma.branch.update({
             where: branchWhereUniqueInput,
             data: branchUpdateInput,

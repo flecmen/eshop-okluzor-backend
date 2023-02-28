@@ -5,7 +5,7 @@ const prisma = new PrismaClient()
 async function main() {
   // Create mock data for the Address and Contact models
   const user1 = await prisma.user.upsert({
-    where: { email: process.env.ADMIN_EMAIL as User['email'] },
+    where: { email: process.env.ADMIN_EMAIL as string },
     update: {},
     create: {
       nazev_firmy: 'Reflek plus',
