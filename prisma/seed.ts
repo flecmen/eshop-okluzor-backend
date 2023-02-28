@@ -14,7 +14,7 @@ async function main() {
       dic: 'test dic',
       tel: '123 456 789',
       email: process.env.ADMIN_EMAIL as User['email'],
-      password: authService.hashPassword(process.env.ADMIN_PASSWORD as User['password']),
+      password: process.env.ADMIN_PASSWORD as User['password'],
       address: {
         create: {
           mesto: 'Brno',
