@@ -30,8 +30,6 @@ router.post('/login', async (req, res) => {
 
     //kontrola hesla
     if (hashed_pw !== user.password) {
-        console.log('hashed_pw: ' + hashed_pw);
-        console.log('db_pw: ' + user.password)
         res.status(401).json('invalid credentials')
         return;
     }
