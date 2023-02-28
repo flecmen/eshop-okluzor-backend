@@ -19,30 +19,32 @@ model Address {
 }
 
 model User {
-  id          Int      @id @unique @default(autoincrement())
-  nazev_firmy String
-  ico         String   @unique
-  dic         String   @unique
-  password    String
-  email       String?  @unique
-  tel         String?
-  addressId   Int      @unique
-  role        Role     @default(Customer)
-  branch      Branch[]
-  order       Order[]
-  address     Address  @relation(fields: [addressId], references: [id])
+  id             Int             @id @unique @default(autoincrement())
+  nazev_firmy    String
+  ico            String          @unique
+  dic            String          @unique
+  password       String
+  email          String?         @unique
+  tel            String?
+  addressId      Int             @unique
+  role           Role            @default(Customer)
+  payment_method Payment_method? @default(prevodem)
+  branch         Branch[]
+  orders         Order[]
+  address        Address         @relation(fields: [addressId], references: [id])
 }
 
 model Branch {
-  id          Int     @id @unique @default(autoincrement())
-  userId      Int
-  branch_name String? //název fyzické pobočky, pokud tam není, tak použít název firmy
-  email       String?
-  tel         String?
-  addressId   Int     @unique
-  address     Address @relation(fields: [addressId], references: [id])
-  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Order       Order[]
+  id             Int     @id @unique @default(autoincrement())
+  userId         Int
+  branch_name    String? //název fyzické pobočky, pokud tam není, tak použít název firmy
+  email          String?
+  tel            String?
+  addressId      Int     @unique
+  address        Address @relation(fields: [addressId], references: [id])
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders         Order[]
+  plati_postovne Boolean @default(true)
 }
 
 model Category {
@@ -137,4 +139,10 @@ enum Order_status {
 enum Role {
   Customer
   Admin
+}
+
+enum Payment_method {
+  dobirka
+  prevodem
+  hotove
 }
