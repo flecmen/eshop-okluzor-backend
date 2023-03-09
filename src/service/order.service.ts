@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 export default {
     //GET
-    async getOrder(orderWhereUniqueInput: Prisma.OrderWhereUniqueInput): Promise<Order | null> {
+    async getOrder(orderWhereUniqueInput: Prisma.OrderWhereUniqueInput) {
         return prisma.order.findUnique({
             where: orderWhereUniqueInput,
             include: {
@@ -12,7 +12,7 @@ export default {
         })
     },
 
-    async getOrders(orderWhereInput: Prisma.OrderWhereInput): Promise<Order[] | null> {
+    async getOrders(orderWhereInput: Prisma.OrderWhereInput) {
         return prisma.order.findMany({
             where: orderWhereInput,
             include: {
@@ -22,7 +22,7 @@ export default {
     },
 
     //PUT
-    async createOrder(orderCreateInput: Prisma.OrderCreateInput): Promise<Order> {
+    async createOrder(orderCreateInput: Prisma.OrderCreateInput) {
         return prisma.order.create({
             data: orderCreateInput,
         });

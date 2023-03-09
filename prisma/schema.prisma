@@ -85,7 +85,7 @@ model Order {
   userId           Int
   branchId         Int
   time_of_creation DateTime     @default(now())
-  status           Order_status
+  status           Order_status @default(objednano)
   note             String?
   branch           Branch       @relation(fields: [branchId], references: [id])
   user             User         @relation(fields: [userId], references: [id])
@@ -131,9 +131,10 @@ enum Velikost {
 }
 
 enum Order_status {
-  na_ceste
+  objednano
   odelsano
   dokonceno
+  zaplaceno
 }
 
 enum Role {

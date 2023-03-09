@@ -5,6 +5,7 @@ import config from './config'
 import homepageRouter from './routes/homepage';
 import authRouter from './routes/auth';
 import userRouter from './routes/user.router';
+import orderRouter from './routes/order.router'
 import branchRouter from './routes/branch.router';
 import Logger from "./lib/logger";
 import morganMiddleware from './config/morganMiddleware'
@@ -31,6 +32,7 @@ app.use('/', homepageRouter);
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/branch', branchRouter);
+app.use('/order', orderRouter)
 
 
 

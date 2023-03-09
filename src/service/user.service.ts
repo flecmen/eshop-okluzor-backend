@@ -47,7 +47,7 @@ export default {
     //SET
 
     async createUser(data: Prisma.UserCreateInput): Promise<User> {
-        return prisma.user.create({
+        return await prisma.user.create({
             data,
         });
     },
@@ -68,7 +68,7 @@ export default {
     },
 
     async updatePassword(userWhereUniqueInput: Prisma.UserWhereUniqueInput, password: User["password"]) {
-        return prisma.user.update({
+        return await prisma.user.update({
             where: userWhereUniqueInput,
             data: {
                 password
