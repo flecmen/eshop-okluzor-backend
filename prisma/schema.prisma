@@ -51,33 +51,34 @@ model Category {
   id          Int       @id @unique @default(autoincrement())
   name        String    @unique
   description String
-  image       Bytes
+  image_path  String?
   products    Product[]
 }
 
 model Product {
-  id                  Int            @id @unique @default(autoincrement())
-  category            Category       @relation(fields: [categoryId], references: [id])
-  nazev               String
-  vyrobce             String
-  popis               String
-  cena                Float
-  obrazek             Bytes
-  dph                 Int
-  //náplasťové
-  pocet_kusu_v_baleni Int
-  rozmery             String
-  //látkové
-  s_obrazkem          Boolean
-  orientace           Orientace
-  //přísavkové
-  barva               Barva
-  typ_prisavkove      Typ_prisavkove
-  //oční krytí
-  velikost            Velikost
-  //other
+  id                  Int               @id @unique @default(autoincrement())
+  category            Category          @relation(fields: [categoryId], references: [id])
+  name                String
+  manufacturer        String
+  description         String            @default("popis")
+  price               Float             @default(599.99)
+  image_path          String?
+  dph                 Int               @default(21)
   categoryId          Int
   Order_item          Order_item[]
+  //náplasťové
+  pocet_kusu_v_baleni Int?
+  rozmery             String?
+  //látkové
+  s_obrazkem          Boolean?
+  orientace           Orientace?
+  barva_latkove       Barva_latkove?
+  obrazek_latkove     Obrazek_latkove?
+  //přísavkové
+  barva_prisavkove    Barva_prisavkove?
+  typ_prisavkove      Typ_prisavkove?
+  //oční krytí
+  velikost            Velikost?
 }
 
 model Order {
@@ -108,7 +109,38 @@ enum Orientace {
   UNI
 }
 
-enum Barva {
+enum Barva_latkove {
+  ZLUTA
+  ZELENA
+  SVETLE_MODRA
+  TMAVE_MODRA
+  FIALOVA
+  CERVENA
+  RUZOVA
+  SVETLE_RUZOVA
+  TELOVA
+}
+
+enum Obrazek_latkove {
+  BERUSKA
+  MOTYLE
+  KVETINY
+  FOTBALOVY_MIC
+  PLAZOVY_MIC
+  PAVUCINA
+  MIMON_HRANATY
+  MIMON_DVE_OCI
+  MIMON_KULATY
+  AUTO
+  DINO
+  KITTY
+  PIRAT
+  LETADLO
+  PONY
+  SRDCE
+}
+
+enum Barva_prisavkove {
   PRIRODNI
   SVETLE_RUZOVA
   CERVENA

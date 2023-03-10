@@ -1,6 +1,6 @@
 import { Product } from "@prisma/client";
 import { Request, Response } from "express"
-import productService from "src/service/product.service";
+import productService from "../service/product.service";
 
 export default {
     getProductById: async (req: Request, res: Response) => {
@@ -11,6 +11,10 @@ export default {
     getProducts: async (req: Request, res: Response) => {
         const products = await productService.getProducts();
         res.json(products)
+    },
+    getCategories: async (req: Request, res: Response) => {
+        const categories = await productService.getCategories();
+        res.json(categories)
     },
     createProduct: async (req: Request, res: Response) => {
         const product = req.body

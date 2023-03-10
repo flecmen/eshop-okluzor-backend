@@ -10,6 +10,9 @@ export default {
     async getProducts() {
         return await prisma.product.findMany()
     },
+    async getCategories() {
+        return await prisma.category.findMany()
+    },
     async createProduct(productCreateInput: Prisma.ProductCreateInput) {
         return await prisma.product.create({
             data: productCreateInput

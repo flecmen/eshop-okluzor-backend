@@ -7,6 +7,7 @@ import authRouter from './routes/auth';
 import userRouter from './routes/user.router';
 import orderRouter from './routes/order.router'
 import branchRouter from './routes/branch.router';
+import productRouter from './routes/product.router'
 import Logger from "./lib/logger";
 import morganMiddleware from './config/morganMiddleware'
 import { expressjwt } from "express-jwt";
@@ -26,13 +27,16 @@ app.use(morganMiddleware) // logger
 // secured urls
 app.use('/user', expressjwt(config.jwtConfig));
 app.use('/branch', expressjwt(config.jwtConfig));
+app.use('/order', expressjwt(config.jwtConfig));
+app.use('/product', expressjwt(config.jwtConfig));
 
 
 app.use('/', homepageRouter);
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/branch', branchRouter);
-app.use('/order', orderRouter)
+app.use('/order', orderRouter);
+app.use('/product', productRouter);
 
 
 

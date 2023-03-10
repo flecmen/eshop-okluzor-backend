@@ -1,4 +1,4 @@
-import { PrismaClient, User } from '@prisma/client'
+import { PrismaClient, User, Category, Product, Orientace, Barva_latkove, Obrazek_latkove, Barva_prisavkove, Typ_prisavkove, Velikost } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -212,6 +212,91 @@ async function main() {
       }
     }
   });
+
+  // Kategorie
+  await prisma.category.createMany({
+    data: [
+      { name: 'Náplasťové', description: 'popis' },
+      { name: 'Látkové', description: 'popis' },
+      { name: 'Přísavkové', description: 'popis' },
+      { name: 'Oční krytí', description: 'popis' },
+    ]
+  })
+
+  // Produkty
+  await prisma.product.createMany({
+    data: [
+      //náplasťové
+      { name: 'Pro-Ophta Mini', manufacturer: 'L&R', categoryId: 1, pocet_kusu_v_baleni: 100, rozmery: "100x100" },
+      { name: 'Pro-Ophta Maxi', manufacturer: 'L&R', categoryId: 1, pocet_kusu_v_baleni: 100, rozmery: "100x100" },
+      { name: 'Opticlude Mini 20ks', manufacturer: '3M', categoryId: 1, pocet_kusu_v_baleni: 20, rozmery: "100x100" },
+      { name: 'Pro-Ophta Maxi 20ks', manufacturer: '3M', categoryId: 1, pocet_kusu_v_baleni: 20, rozmery: "100x100" },
+      { name: 'Pro-Ophta Mini 100ks', manufacturer: '3M', categoryId: 1, pocet_kusu_v_baleni: 100, rozmery: "100x100" },
+      { name: 'Pro-Ophta maxi 100ks', manufacturer: '3M', categoryId: 1, pocet_kusu_v_baleni: 100, rozmery: "100x100" },
+      { name: 'Pro-Ophta Mini 30ks', manufacturer: '3M', categoryId: 1, pocet_kusu_v_baleni: 30, rozmery: "100x100" },
+      { name: 'Pro-Ophta maxi 30ks', manufacturer: '3M', categoryId: 1, pocet_kusu_v_baleni: 30, rozmery: "100x100" },
+      //látkové
+      { name: 'Univerzální bez obrázku', manufacturer: '3M', categoryId: 2, s_obrazkem: false, orientace: Orientace.UNI, barva_latkove: Barva_latkove.ZLUTA },
+      { name: 'Univerzální bez obrázku', manufacturer: '3M', categoryId: 2, s_obrazkem: false, orientace: Orientace.UNI, barva_latkove: Barva_latkove.ZELENA },
+      { name: 'Univerzální bez obrázku', manufacturer: '3M', categoryId: 2, s_obrazkem: false, orientace: Orientace.UNI, barva_latkove: Barva_latkove.SVETLE_MODRA },
+      { name: 'Univerzální bez obrázku', manufacturer: '3M', categoryId: 2, s_obrazkem: false, orientace: Orientace.UNI, barva_latkove: Barva_latkove.TMAVE_MODRA },
+      { name: 'Univerzální bez obrázku', manufacturer: '3M', categoryId: 2, s_obrazkem: false, orientace: Orientace.UNI, barva_latkove: Barva_latkove.FIALOVA },
+      { name: 'Univerzální bez obrázku', manufacturer: '3M', categoryId: 2, s_obrazkem: false, orientace: Orientace.UNI, barva_latkove: Barva_latkove.CERVENA },
+      { name: 'Univerzální bez obrázku', manufacturer: '3M', categoryId: 2, s_obrazkem: false, orientace: Orientace.UNI, barva_latkove: Barva_latkove.RUZOVA },
+      { name: 'Univerzální bez obrázku', manufacturer: '3M', categoryId: 2, s_obrazkem: false, orientace: Orientace.UNI, barva_latkove: Barva_latkove.SVETLE_RUZOVA },
+      { name: 'Univerzální bez obrázku', manufacturer: '3M', categoryId: 2, s_obrazkem: false, orientace: Orientace.UNI, barva_latkove: Barva_latkove.TELOVA },
+
+      { name: 'Univerzální s obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.UNI, obrazek_latkove: Obrazek_latkove.BERUSKA },
+      { name: 'Univerzální s obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.UNI, obrazek_latkove: Obrazek_latkove.MOTYLE },
+      { name: 'Univerzální s obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.UNI, obrazek_latkove: Obrazek_latkove.KVETINY },
+      { name: 'Univerzální s obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.UNI, obrazek_latkove: Obrazek_latkove.FOTBALOVY_MIC },
+      { name: 'Univerzální s obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.UNI, obrazek_latkove: Obrazek_latkove.PLAZOVY_MIC },
+      { name: 'Univerzální s obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.UNI, obrazek_latkove: Obrazek_latkove.PAVUCINA },
+      { name: 'Univerzální s obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.UNI, obrazek_latkove: Obrazek_latkove.MIMON_HRANATY },
+      { name: 'Univerzální s obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.UNI, obrazek_latkove: Obrazek_latkove.MIMON_DVE_OCI },
+      { name: 'Univerzální s obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.UNI, obrazek_latkove: Obrazek_latkove.MIMON_KULATY },
+
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.PRAVY, obrazek_latkove: Obrazek_latkove.AUTO },
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.PRAVY, obrazek_latkove: Obrazek_latkove.DINO },
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.PRAVY, obrazek_latkove: Obrazek_latkove.KITTY },
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.PRAVY, obrazek_latkove: Obrazek_latkove.PIRAT },
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.PRAVY, obrazek_latkove: Obrazek_latkove.LETADLO },
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.PRAVY, obrazek_latkove: Obrazek_latkove.PONY },
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.PRAVY, obrazek_latkove: Obrazek_latkove.SRDCE },
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.LEVY, obrazek_latkove: Obrazek_latkove.AUTO },
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.LEVY, obrazek_latkove: Obrazek_latkove.DINO },
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.LEVY, obrazek_latkove: Obrazek_latkove.KITTY },
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.LEVY, obrazek_latkove: Obrazek_latkove.PIRAT },
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.LEVY, obrazek_latkove: Obrazek_latkove.LETADLO },
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.LEVY, obrazek_latkove: Obrazek_latkove.PONY },
+      { name: 'S obrázkem', manufacturer: '3M', categoryId: 2, s_obrazkem: true, orientace: Orientace.LEVY, obrazek_latkove: Obrazek_latkove.SRDCE },
+
+      //přísavkové
+      { name: 'Přísavkový A', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.PRIRODNI, typ_prisavkove: Typ_prisavkove.A },
+
+      { name: 'Přísavkový B', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.PRIRODNI, typ_prisavkove: Typ_prisavkove.B },
+      { name: 'Přísavkový B', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.SVETLE_RUZOVA, typ_prisavkove: Typ_prisavkove.B },
+      { name: 'Přísavkový B', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.CERVENA, typ_prisavkove: Typ_prisavkove.B },
+      { name: 'Přísavkový B', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.FIALOVA, typ_prisavkove: Typ_prisavkove.B },
+      { name: 'Přísavkový B', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.MODRA, typ_prisavkove: Typ_prisavkove.B },
+      { name: 'Přísavkový B', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.ZELENA, typ_prisavkove: Typ_prisavkove.B },
+      { name: 'Přísavkový B', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.TYRKYSOVA, typ_prisavkove: Typ_prisavkove.B },
+      { name: 'Přísavkový B', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.ZLUTA, typ_prisavkove: Typ_prisavkove.B },
+
+      { name: 'Přísavkový C', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.PRIRODNI, typ_prisavkove: Typ_prisavkove.C },
+      { name: 'Přísavkový C', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.SVETLE_RUZOVA, typ_prisavkove: Typ_prisavkove.C },
+      { name: 'Přísavkový C', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.CERVENA, typ_prisavkove: Typ_prisavkove.C },
+      { name: 'Přísavkový C', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.FIALOVA, typ_prisavkove: Typ_prisavkove.C },
+      { name: 'Přísavkový C', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.MODRA, typ_prisavkove: Typ_prisavkove.C },
+      { name: 'Přísavkový C', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.ZELENA, typ_prisavkove: Typ_prisavkove.C },
+      { name: 'Přísavkový C', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.TYRKYSOVA, typ_prisavkove: Typ_prisavkove.C },
+      { name: 'Přísavkový C', manufacturer: 'Jaroslava Vavřičková', categoryId: 3, barva_prisavkove: Barva_prisavkove.ZLUTA, typ_prisavkove: Typ_prisavkove.C },
+
+      // oční krytí
+      { name: 'Oční krytí', manufacturer: '3M', categoryId: 4, velikost: Velikost.L },
+      { name: 'Oční krytí', manufacturer: '3M', categoryId: 4, velikost: Velikost.S },
+    ]
+  })
 }
 
 main()
